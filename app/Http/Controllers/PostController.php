@@ -42,8 +42,16 @@ class PostController extends Controller
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'description' => 'nullable|string',
             'published_at' => 'nullable|date',
+            'file'        => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp|max:8192',
             'link' => 'nullable|url',
         ]);
+
+        // Handle single file upload
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('posts/files', 'public');
+        }
+        $validated['file'] = $filePath;
 
         $imagePaths = [];
 
@@ -68,11 +76,20 @@ class PostController extends Controller
             'department' => 'string|in:PALI,RITI,SACHAS,MACOR',
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'description' => 'nullable|string',
+            'file'        => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp|max:8192',
             'published_at' => 'nullable|date',
             'link' => 'nullable|url',
         ]);
 
-        $imagePaths = $post->images ?? [];
+        // Replace file if uploaded
+        if ($request->hasFile('file')) {
+
+            if ($post->file && Storage::disk('public')->exists($post->file)) {
+                Storage::disk('public')->delete($post->file);
+            }
+
+            $post->file = $request->file('file')->store('posts/files', 'public');
+        }
 
         $existing = $post->images ?? [];
 
@@ -105,6 +122,11 @@ class PostController extends Controller
     // DELETE /api/posts/{id}
     public function destroy(Post $post)
     {
+        // Delete file
+        if ($post->file && Storage::disk('public')->exists($post->file)) {
+            Storage::disk('public')->delete($post->file);
+        }
+        
         if ($post->images && is_array($post->images)) {
             foreach ($post->images as $img) {
                 if (Storage::disk('public')->exists($img)) {

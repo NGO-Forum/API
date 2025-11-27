@@ -16,6 +16,7 @@ class Post extends Model
         'published_at',
         'department',
         'link',
+        'file',
     ];
 
     protected $casts = [

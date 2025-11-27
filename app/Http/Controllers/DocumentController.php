@@ -39,11 +39,15 @@ class DocumentController extends Controller
         });
 
         return response()->json([
-            'data' => $docs,
+            'data' => $docs->items(),
+            'current_page' => $docs->currentPage(),
+            'last_page' => $docs->lastPage(),
+            'total' => $docs->total(),
             'types' => $types,
             'years' => $years,
         ]);;
     }
+
 
 
     // ===================================

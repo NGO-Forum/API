@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('file')->nullable();
             $table->json('images')->nullable(); // image path (storage)
             $table->longText('description')->nullable();
             $table->dateTime('published_at')->nullable();
