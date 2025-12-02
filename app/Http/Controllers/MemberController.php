@@ -10,7 +10,7 @@ class MemberController extends Controller
 {
     public function index()
     {
-        return response()->json(Member::all());
+        return response()->json(Member::orderBy('id', 'desc'));
     }
 
     public function store(Request $request)
