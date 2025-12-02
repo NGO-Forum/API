@@ -33,7 +33,7 @@ class ProjectController extends Controller
             'target_groups'   => 'nullable|string',
             'donor'           => 'nullable|string|max:255',
             'key_activities'  => 'nullable|array',
-            'key_activities.*'=> 'string',
+            'key_activities.*' => 'string',
             'images'          => 'nullable|array',
             'images.*'        => 'image|mimes:jpg,jpeg,png,webp|max:4096',
             'department' => 'nullable|string|in:RITI,SACHAS,MACOR,PALI',
@@ -67,32 +67,34 @@ class ProjectController extends Controller
             'target_groups'   => 'nullable|string',
             'donor'           => 'nullable|string|max:255',
             'key_activities'  => 'nullable|array',
-            'key_activities.*'=> 'string',
+            'key_activities.*' => 'string',
+            'removeImages'    => 'nullable|array',
+            'removeImages.*'  => 'string',
             'images'          => 'nullable|array',
             'images.*'        => 'image|mimes:jpg,jpeg,png,webp|max:4096',
-            'department' => 'nullable|string|in:RITI,SACHAS,MACOR,PALI',
+            'department'      => 'nullable|string|in:RITI,SACHAS,MACOR,PALI',
         ]);
 
-         // If new images are uploaded, delete old images
-        if ($request->hasFile('images')) {
+        // Delete selected old images
+        $remainingImages = $project->images ?? [];
 
-            // Delete old images
-            if ($project->images) {
-                foreach ($project->images as $oldImage) {
-                    if (Storage::disk('public')->exists($oldImage)) {
-                        Storage::disk('public')->delete($oldImage);
-                    }
+        if ($request->removeImages) {
+            foreach ($request->removeImages as $rem) {
+                if (Storage::disk('public')->exists($rem)) {
+                    Storage::disk('public')->delete($rem);
                 }
+                $remainingImages = array_filter($remainingImages, fn($img) => $img !== $rem);
             }
-
-            // Upload new ones
-            $uploadedImages = [];
-            foreach ($request->file('images') as $file) {
-                $uploadedImages[] = $file->store('projects', 'public');
-            }
-
-            $data['images'] = $uploadedImages;
         }
+
+        // Add newly uploaded images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $remainingImages[] = $file->store("projects", "public");
+            }
+        }
+
+        $data['images'] = array_values($remainingImages);
 
         $project->update($data);
 
