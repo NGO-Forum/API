@@ -24,7 +24,7 @@ class DonationController extends Controller
             'full_name' => 'required|string|max:255',
             'email'     => 'required|email|max:255',
             'phone'     => 'nullable|string|max:20',
-            'amount'    => 'required|numeric|min:1',
+            'amount'    => 'required|numeric|min:0.01',
             'message'   => 'nullable|string',
         ]);
 
@@ -55,6 +55,21 @@ class DonationController extends Controller
             'success' => true,
             'message' => 'Donation marked as paid.',
             'data' => $donation,
+        ]);
+    }
+
+    public function checkStatus($transaction)
+    {
+        $donation = Donation::where('transaction', $transaction)->first();
+
+        if (!$donation) {
+            return response()->json(['exists' => false]);
+        }
+
+        return response()->json([
+            'exists' => true,
+            'paid'   => $donation->paid,
+            'data'   => $donation
         ]);
     }
 }

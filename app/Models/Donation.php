@@ -22,7 +22,6 @@ class Donation extends Model
 
     protected $casts = [
         'paid' => 'boolean',
-        'amount' => 'decimal:2',
         'paid_at' => 'datetime',
     ];
 }

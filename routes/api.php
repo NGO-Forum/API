@@ -15,6 +15,7 @@ use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\KhqrController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\ImpactController;
@@ -27,7 +28,10 @@ Route::get('/impacts', [ImpactController::class, 'index']);
 Route::get('/impacts/{id}', [ImpactController::class, 'show']);
 
 // donation store
+Route::post('/khqr/generate', [KhqrController::class, 'generate']);
 Route::post('/donations', [DonationController::class, 'store']);
+Route::post('/donations/paid/{transaction}', [DonationController::class, 'markPaid']);
+Route::get('/donations/check/{transaction}', [DonationController::class, 'checkStatus']);
 
 
 Route::get('/search', [SearchController::class, 'search']);
