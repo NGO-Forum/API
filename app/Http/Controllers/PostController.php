@@ -140,7 +140,7 @@ class PostController extends Controller
         return response()->json(['message' => 'Deleted successfully'], 200);
     }
 
-    public function getMonthlyStats()
+    public function getMonthlyStats(Request $request)
     {
         $year = $request->year ?? now()->year;
 
