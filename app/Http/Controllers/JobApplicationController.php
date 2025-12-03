@@ -44,7 +44,7 @@ class JobApplicationController extends Controller
 
 
         Mail::send([], [], function ($message) use ($request, $html) {
-            $message->to("mengseu@ngoforum.org.kh")
+            $message->to("job@ngoforum.org.kh")
                 ->from($request->email, $request->name) // ✅ add who sent it
                 ->subject("Job Application – " . $request->job_title)
                 ->html($html);
