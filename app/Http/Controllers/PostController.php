@@ -62,7 +62,7 @@ class PostController extends Controller
         }
         // SAVE IMAGES
         $validated['images'] = $imagePaths;
-        
+
         $post = Post::create($validated);
 
         return response()->json($post, 201);
@@ -126,7 +126,7 @@ class PostController extends Controller
         if ($post->file && Storage::disk('public')->exists($post->file)) {
             Storage::disk('public')->delete($post->file);
         }
-        
+
         if ($post->images && is_array($post->images)) {
             foreach ($post->images as $img) {
                 if (Storage::disk('public')->exists($img)) {
@@ -138,5 +138,16 @@ class PostController extends Controller
         $post->delete();
 
         return response()->json(['message' => 'Deleted successfully'], 200);
+    }
+
+    public function getMonthlyStats()
+    {
+        $data = \App\Models\Post::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as total")
+            ->where('created_at', '>=', now()->subMonths(12))
+            ->groupBy('month')
+            ->orderBy('month', 'ASC')
+            ->get();
+
+        return response()->json($data);
     }
 }

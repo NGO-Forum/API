@@ -97,6 +97,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Posts management
     Route::put('/posts/{post}', [PostController::class, 'update']);
     Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+    Route::get('/stats/posts/monthly', [PostController::class, 'getMonthlyStats']);
+
 
     // Jobs management
     Route::post('/jobs', [JobController::class, 'store']);
