@@ -18,7 +18,9 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\ImpactController;
+use App\Http\Controllers\ContactController;
 
+Route::post('/contact/send', [ContactController::class, 'send']);
 
 // Impacts
 Route::get('/impacts', [ImpactController::class, 'index']);
