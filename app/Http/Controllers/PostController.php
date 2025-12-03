@@ -142,8 +142,10 @@ class PostController extends Controller
 
     public function getMonthlyStats()
     {
+        $year = $request->year ?? now()->year;
+
         $data = \App\Models\Post::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as total")
-            ->where('created_at', '>=', now()->subMonths(12))
+            ->whereYear('created_at', $year)
             ->groupBy('month')
             ->orderBy('month', 'ASC')
             ->get();
