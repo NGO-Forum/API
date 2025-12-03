@@ -43,7 +43,7 @@ class ContactController extends Controller
             $message->to("info@ngoforum.org.kh")
 
                 // User is the sender (looks natural)
-                ->from($request->email, $name)
+                ->from("no-reply@ngoforum.org.kh", "NGO Forum Website")
 
                 // Safe fallback: website also added
                 ->replyTo($request->email, $name)
