@@ -10,10 +10,29 @@ class DonationController extends Controller
     /**
      * Display a listing of donations.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Donation::latest()->get());
+        $search = $request->search;
+
+        $donations = Donation::when($search, function ($query) use ($search) {
+            $query->where('full_name', 'LIKE', "%$search%")
+                ->orWhere('email', 'LIKE', "%$search%")
+                ->orWhere('transaction_id', 'LIKE', "%$search%");
+        })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        $totalAmount = Donation::sum('amount');
+
+        return response()->json([
+            'success'       => true,
+            'donations'     => $donations,
+            'totalAmount'   => $totalAmount,
+            'search'        => $search,
+        ]);
     }
+
+
 
     /**
      * Store a newly created donation (before payment).
