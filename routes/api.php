@@ -20,6 +20,12 @@ use App\Http\Controllers\DonationController;
 use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\ImpactController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ViewController;
+
+
+Route::post('/track-view', [ViewController::class, 'increaseView']);
+Route::get('/total-views', [ViewController::class, 'getTotalViews']);
+
 
 Route::post('/contact/send', [ContactController::class, 'send']);
 
