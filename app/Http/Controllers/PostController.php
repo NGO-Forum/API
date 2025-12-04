@@ -91,26 +91,29 @@ class PostController extends Controller
             $post->file = $request->file('file')->store('posts/files', 'public');
         }
 
+        // --- IMAGE UPDATE LOGIC ---
+        $keep = json_decode($request->keep_old_images, true) ?? [];
+
         $existing = $post->images ?? [];
 
-        if ($request->hasFile('images')) {
-            // delete old images
-            foreach ($existing as $old) {
-                Storage::disk('public')->delete($old);
+        // Delete images NOT in keep list
+        foreach ($existing as $img) {
+            if (!in_array($img, $keep)) {
+                Storage::disk('public')->delete($img);
             }
-
-            // upload new images
-            $newPaths = [];
-            foreach ($request->file('images') as $img) {
-                $newPaths[] = $img->store('posts', 'public');
-            }
-
-            $validated['images'] = $newPaths;
-        } else {
-            // keep old images
-            $validated['images'] = $existing;
         }
 
+        // Start with kept images
+        $finalImages = $keep;
+
+        // Add new uploaded images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $img) {
+                $finalImages[] = $img->store('posts', 'public');
+            }
+        }
+
+        $validated['images'] = $finalImages;
         $validated['link'] = $request->link ?? $post->link;
 
         $post->update($validated);
