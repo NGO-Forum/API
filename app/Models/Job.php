@@ -15,5 +15,6 @@ class Job extends Model
         'requirements',
         'closing_date',
         'department',
+        'attachment'
     ];
 }
