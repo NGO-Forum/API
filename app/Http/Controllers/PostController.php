@@ -38,7 +38,7 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'department' => 'required|string|in:PALI,RITI,SACHAS,MACOR',
+            'department' => 'nullable|string|in:PALI,RITI,SACHAS,MACOR',
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'description' => 'nullable|string',
             'published_at' => 'nullable|date',
