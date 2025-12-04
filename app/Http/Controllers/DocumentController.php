@@ -59,7 +59,7 @@ class DocumentController extends Controller
             'title' => 'required',
             'type' => 'required',
             'year' => 'required',
-            'file_kh' => 'required|file|mimes:pdf,doc,docx',
+            'file_kh' => 'nullable|file|mimes:pdf,doc,docx',
             'file_en' => 'nullable|file|mimes:pdf,doc,docx',
         ]);
 
