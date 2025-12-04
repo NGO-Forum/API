@@ -63,7 +63,9 @@ class DocumentController extends Controller
             'file_en' => 'nullable|file|mimes:pdf,doc,docx',
         ]);
 
-        $fileKH = $request->file('file_kh')->store('documents', 'public');
+        $fileKH = $request->hasFile('file_kh') 
+            ? $request->file('file_kh')->store('documents', 'public')
+            : null;
         $fileEN = $request->hasFile('file_en')
             ? $request->file('file_en')->store('documents', 'public')
             : null;

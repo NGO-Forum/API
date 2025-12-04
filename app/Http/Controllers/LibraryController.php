@@ -56,11 +56,13 @@ class LibraryController extends Controller
             'title' => 'required',
             'type' => 'required',
             'year' => 'required',
-            'file_kh' => 'required|file|mimes:pdf,doc,docx',
+            'file_kh' => 'nullable|file|mimes:pdf,doc,docx',
             'file_en' => 'nullable|file|mimes:pdf,doc,docx',
         ]);
 
-        $fileKH = $request->file('file_kh')->store('librarys', 'public');
+        $fileKH = $request->hasFile('file_kh')
+            ? $request->file('file_kh')->store('librarys', 'public')
+            : null;
         $fileEN = $request->hasFile('file_en')
             ? $request->file('file_en')->store('librarys', 'public')
             : null;
