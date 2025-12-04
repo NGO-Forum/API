@@ -59,8 +59,8 @@ class DocumentController extends Controller
             'title' => 'required',
             'type' => 'required',
             'year' => 'required',
-            'file_kh' => 'nullable|file|mimes:pdf,doc,docx',
-            'file_en' => 'nullable|file|mimes:pdf,doc,docx',
+            'file_kh' => 'nullable|sometimes|file|mimes:pdf,doc,docx',
+            'file_en' => 'nullable|sometimes|file|mimes:pdf,doc,docx',
         ]);
 
         $fileKH = $request->hasFile('file_kh') 
@@ -104,8 +104,8 @@ class DocumentController extends Controller
             'title' => 'required',
             'type' => 'required',
             'year' => 'required',
-            'file_kh' => 'nullable|file|mimes:pdf,doc,docx',
-            'file_en' => 'nullable|file|mimes:pdf,doc,docx',
+            'file_en' => 'nullable|sometimes|file|mimes:pdf,doc,docx',
+            'file_en' => 'nullable|sometimes|file|mimes:pdf,doc,docx',
         ]);
 
         // Replace KH file if new uploaded
