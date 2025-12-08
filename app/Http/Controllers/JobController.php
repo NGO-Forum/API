@@ -27,23 +27,24 @@ class JobController extends Controller
             "description" => "required",
             "requirements" => "nullable",
             "closing_date" => "nullable|date",
-            'department' => 'required|string|in:PALI,RITI,SACHAS,MACOR',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'attachment' => 'nullable|file|mimes:pdf,doc,docx|max:8192',
+            "department" => "required|string|in:PALI,RITI,SACHAS,MACOR",
+            "image" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
+            "attachment" => "nullable|file|mimes:pdf,doc,docx|max:8192",
         ]);
+
+        if ($validated['closing_date'] === "") {
+            $validated['closing_date'] = null;
+        }
 
         if ($request->hasFile("image")) {
             $validated["image"] = $request->file("image")->store("jobs", "public");
         }
 
-        // ATTACHMENT (PDF/DOC/etc.)
-        if ($request->hasFile('attachment')) {
-            $validated['attachment'] = $request->file('attachment')->store('jobs/attachments', 'public');
+        if ($request->hasFile("attachment")) {
+            $validated["attachment"] = $request->file("attachment")->store("jobs/attachments", "public");
         }
 
-        $job = Job::create($validated);
-
-        return response()->json($job, 201);
+        return Job::create($validated);
     }
 
     public function update(Request $request, $id)
@@ -55,10 +56,14 @@ class JobController extends Controller
             "description" => "required",
             "requirements" => "nullable",
             "closing_date" => "nullable|date",
-            'department' => 'required|string|in:PALI,RITI,SACHAS,MACOR',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'attachment' => 'nullable|file|mimes:pdf,doc,docx|max:8192',
+            "department" => "required|string|in:PALI,RITI,SACHAS,MACOR",
+            "image" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
+            "attachment" => "nullable|file|mimes:pdf,doc,docx|max:8192",
         ]);
+
+        if ($validated['closing_date'] === "") {
+            $validated['closing_date'] = null;
+        }
 
         if ($request->hasFile("image")) {
             if ($job->image && Storage::disk("public")->exists($job->image)) {
@@ -67,18 +72,16 @@ class JobController extends Controller
             $validated["image"] = $request->file("image")->store("jobs", "public");
         }
 
-        // ATTACHMENT UPDATE
-        if ($request->hasFile('attachment')) {
-            if ($job->attachment && Storage::disk('public')->exists($job->attachment)) {
-                Storage::disk('public')->delete($job->attachment);
+        if ($request->hasFile("attachment")) {
+            if ($job->attachment && Storage::disk("public")->exists($job->attachment)) {
+                Storage::disk("public")->delete($job->attachment);
             }
-            $validated['attachment'] = $request->file('attachment')->store('jobs/attachments', 'public');
+            $validated["attachment"] = $request->file("attachment")->store("jobs/attachments", "public");
         }
-
 
         $job->update($validated);
 
-        return response()->json($job);
+        return $job;
     }
 
     public function destroy($id)
