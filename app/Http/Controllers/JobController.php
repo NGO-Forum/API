@@ -67,9 +67,9 @@ class JobController extends Controller
             $validated["image"] = $request->file("image")->store("jobs", "public");
         }
 
-        // ATTACHMENT
+        // ATTACHMENT UPDATE
         if ($request->hasFile('attachment')) {
-            if ($job->attachment) {
+            if ($job->attachment && Storage::disk('public')->exists($job->attachment)) {
                 Storage::disk('public')->delete($job->attachment);
             }
             $validated['attachment'] = $request->file('attachment')->store('jobs/attachments', 'public');
@@ -88,6 +88,11 @@ class JobController extends Controller
         if ($job->image && Storage::disk("public")->exists($job->image)) {
             Storage::disk("public")->delete($job->image);
         }
+
+        if ($job->attachment && Storage::disk("public")->exists($job->attachment)) {
+            Storage::disk("public")->delete($job->attachment);
+        }
+
 
         $job->delete();
 

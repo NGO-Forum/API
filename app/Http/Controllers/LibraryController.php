@@ -137,9 +137,13 @@ class LibraryController extends Controller
     {
         $doc = Library::findOrFail($id);
 
-        Storage::disk('public')->delete($doc->file_kh);
+        // Delete Khmer file safely
+        if ($doc->file_kh && Storage::disk('public')->exists($doc->file_kh)) {
+            Storage::disk('public')->delete($doc->file_kh);
+        }
 
-        if ($doc->file_en) {
+        // Delete English file safely
+        if ($doc->file_en && Storage::disk('public')->exists($doc->file_en)) {
             Storage::disk('public')->delete($doc->file_en);
         }
 
