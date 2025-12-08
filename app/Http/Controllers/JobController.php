@@ -57,9 +57,10 @@ class JobController extends Controller
             "requirements" => "nullable",
             "closing_date" => "nullable|date",
             "department" => "required|string|in:PALI,RITI,SACHAS,MACOR",
-            "image" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
-            "attachment" => "nullable|file|mimes:pdf,doc,docx|max:8192",
+            "image" => "sometimes|nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
+            "attachment" => "sometimes|nullable|file|mimes:pdf,doc,docx|max:8192",
         ]);
+
 
         if ($request->closing_date === "" || $request->closing_date === null) {
             $validated['closing_date'] = null;
