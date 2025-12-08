@@ -32,7 +32,7 @@ class JobController extends Controller
             "attachment" => "nullable|file|mimes:pdf,doc,docx|max:8192",
         ]);
 
-        if ($validated['closing_date'] === "") {
+        if ($request->closing_date === "" || $request->closing_date === null) {
             $validated['closing_date'] = null;
         }
 
@@ -61,7 +61,7 @@ class JobController extends Controller
             "attachment" => "nullable|file|mimes:pdf,doc,docx|max:8192",
         ]);
 
-        if ($validated['closing_date'] === "") {
+        if ($request->closing_date === "" || $request->closing_date === null) {
             $validated['closing_date'] = null;
         }
 
