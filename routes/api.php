@@ -21,11 +21,13 @@ use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\ImpactController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\VisitorController;
+use App\Http\Controllers\CommentController;
+
+// Comments routes
+Route::apiResource('comments', CommentController::class);
 
 Route::post('/track-visitor', [VisitorController::class, 'track']);
 Route::get('/unique-visitors', [VisitorController::class, 'count']);
-
-
 
 Route::post('/contact/send', [ContactController::class, 'send']);
 
