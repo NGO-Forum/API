@@ -24,8 +24,10 @@ use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\CommentController;
 
 // Comments routes
-Route::apiResource('comments', CommentController::class);
+Route::get('/comments', [CommentController::class, 'index']);
+Route::post('/comments', [CommentController::class, 'store']);
 
+// Visitor tracking
 Route::post('/track-visitor', [VisitorController::class, 'track']);
 Route::get('/unique-visitors', [VisitorController::class, 'count']);
 
@@ -164,7 +166,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/impacts', [ImpactController::class, 'store']);
     Route::put('/impacts/{id}', [ImpactController::class, 'update']); // for PUT with file
     Route::delete('/impacts/{id}', [ImpactController::class, 'destroy']);
-
-    // Comments management
-    Route::get('/comments', [CommentController::class, 'index']);
 });

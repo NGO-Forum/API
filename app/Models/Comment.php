@@ -18,7 +18,4 @@ class Comment extends Model
         'images' => 'array',
     ];
 
-    protected $attributes = [
-        'images' => '[]',
-    ];
 }
