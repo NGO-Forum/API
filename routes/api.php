@@ -164,4 +164,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/impacts', [ImpactController::class, 'store']);
     Route::put('/impacts/{id}', [ImpactController::class, 'update']); // for PUT with file
     Route::delete('/impacts/{id}', [ImpactController::class, 'destroy']);
+
+    // Comments management
+    Route::get('/comments', [CommentController::class, 'index']);
 });
