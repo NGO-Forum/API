@@ -23,6 +23,10 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\CommentController;
 
+
+// network
+Route::get('/networks', [NetworkController::class, 'index']);
+
 // Comments routes
 Route::get('/comments', [CommentController::class, 'index']);
 Route::post('/comments', [CommentController::class, 'store']);
@@ -149,9 +153,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Donate
     Route::get('/donations', [DonationController::class, 'index']);
 
-    // File Member
     // Networks
-    Route::get('/networks', [NetworkController::class, 'index']);
     Route::post('/networks', [NetworkController::class, 'store']);
     Route::put('/networks/{id}', [NetworkController::class, 'update']);
     Route::delete('/networks/{id}', [NetworkController::class, 'destroy']);
